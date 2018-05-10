@@ -11,6 +11,13 @@ export default class Login extends Component {
       password: ""
     };
   }
+  componentDidMount(){
+      this.setState({isLoading:true});
+
+      fetch("http://MyBackend.com")
+      .then(response=>response.json())
+      .then(data => this.setState({userData:data, isLoading:false}))
+  }
 
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length > 0;
@@ -22,10 +29,15 @@ export default class Login extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit = async  event => {
     event.preventDefault();
-    
-    this.props.userHasAuthenticated(true);
+    try {
+        //await Auth.signIn(this.state.email, this.state.password);
+        this.props.userHasAuthenticated(true);
+        this.props.history.push("/");
+      } catch (e) {
+        alert(e.message);
+      }
   }
 
   render() {
