@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  border: none;
 }
 
 .App-logo {
@@ -33,4 +34,9 @@
 
 .App .navbar-brand {
   font-weight: bold;
+}
+
+.navbar{
+  border: none;
+  background: white;
 }

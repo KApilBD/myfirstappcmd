@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import "./App.css";
+// import classes from "./App.css";
 import Routes from "./Routes";
 
 class App extends Component {
@@ -29,7 +29,7 @@ class App extends Component {
 
     return (
       <div className="App container">
-        <Navbar fluid collapseOnSelect>
+        <Navbar fluid collapseOnSelect >
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">Capgemini</Link>

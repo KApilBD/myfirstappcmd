@@ -10,7 +10,7 @@ export default class Login extends Component {
     this.state = {
        username: "",
       password: "",
-      entity:{},
+      entity:[],
     };
   }
   componentDidMount(){
@@ -26,7 +26,7 @@ export default class Login extends Component {
     return this.state.username.length > 0 && this.state.password.length > 0;
   }
 
-  handleChange = event => {
+  handleChange = event => {    
     this.setState({
       [event.target.id]: event.target.value
     });
@@ -38,18 +38,42 @@ export default class Login extends Component {
         //await Auth.signIn(this.state.email, this.state.password);
         this.setState({isLoading:true});
         console.log(this.state.username + "----"+this.state.password)
-        Axios.post('http://localhost:8080/kedbloginapi/user/login',{username:this.state.username,password:this.state.password})
+        Axios.post('http://10.76.17.138:8080/kedbloginapi/user/login',{username:this.state.username,password:this.state.password})
         .then(res=>{
-          console.log("Before Setting state"+res.data[0].engagements);
-          this.setState({entity:res.data})
-          console.log("Entity after setting state"+this.state.entity)
-        })
-    
-        if(this.state.entity){
-        this.props.userHasAuthenticated(true);}
 
-        (this.state.entity)?
-        this.props.history.push("/") : this.props.history.push("/login")
+          let engagementsData = [];
+          engagementsData = res.data;
+          // console.log("Before Setting state Stringy :"+res.data[0].tower);
+          // console.log("Before Setting state :"+engagementsData);
+          // let engData = JSON.parse(engagementsData);
+          // console.log("Before Setting state engdata :"+engData[0].tower);
+
+          this.setState({entity:engagementsData})
+          console.log("Entity after setting state :"+this.state.entity);
+          if(this.state.entity){
+            this.props.userHasAuthenticated(true);}
+
+            // for (let i in this.state.entity){
+            //       console.log(this.state.entity[i].tower); 
+            //   }
+
+        const queryParam = [];
+        for (let i in this.state.entity){
+            queryParam.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.entity[i].tower));  
+        }
+        
+        // queryParam.push('price=' + this.state.totalPrice)
+
+        const queryString = queryParam.join('&');
+        // this.props.history.push({
+        //     pathname: '/checkout',
+        //     search: '?' +queryString});
+
+    
+            (this.state.entity)?
+            this.props.history.push({pathname:"/",search:'?' +queryString}) : this.props.history.push("/login")
+        })
+  
       } catch (e) {
         alert(e.message);
       }
@@ -60,7 +84,7 @@ export default class Login extends Component {
       <div className="Login">
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="username" bsSize="large">
-            <ControlLabel>User Name</ControlLabel>
+            <ControlLabel>User Name</ControlLabel>  
             <FormControl
               autoFocus
               type="text"
